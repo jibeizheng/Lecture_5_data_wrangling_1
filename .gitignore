@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+
+#ignore these things, donot commit
+/data

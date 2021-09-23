@@ -1,21 +1,77 @@
 ---
 title: "Simple document"
-output: html_document
+output: github_document
 ---
 
-I'm an R Markdown document! 
-
-# Section 1
-
-Here's a **code chunk** that samples from 
-a _normal distribution_:
-
-```{r}
-samp = rnorm(100)
-length(samp)
+```{r, echo = FALSE, message = FALSE}
+library(tidyverse)
 ```
 
-# Section 2
+## Import some data
 
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
+I want to import `FAS_litters.csv`.
+
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv")
+```
+
+Yay! I imported the dataset. Now I want better names.
+
+```{r}
+#names(litters_df)
+
+litters_df = janitor::clean_names(litters_df)
+```
+
+Yay! Now I have better names. Let's look at the dataset.
+
+```{r}
+litters_df
+
+head(litters_df, 8)
+tail(litters_df)
+```
+
+One I use a lot is:
+
+```{r, eval = FALSE}
+#open a new window of the whole df
+
+view(litters_df)
+```
+
+Here's a `skimr`:
+
+```{r}
+skimr::skim(litters_df)
+```
+
+## Arguments in `read_csv`
+
+```{r}
+litters_df = 
+  read_csv(
+    "data/FAS_litters.csv",
+    skip = 5,
+    col_names = FALSE,
+    na = "Low8"
+  )
+```
+
+## Parsing columns
+
+```{r}
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = cols(
+    Group = col_character(),
+    `Litter Number` = col_character(),
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double(),
+    `GD of Birth` = col_integer(),
+    `Pups born alive` = col_integer(),
+    `Pups dead @ birth` = col_integer(),
+    `Pups survive` = col_integer()
+  )
+)
+```
+
